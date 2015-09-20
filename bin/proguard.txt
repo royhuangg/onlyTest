@@ -1,0 +1,6 @@
+# view res/layout/pulltorefresh.xml #generated:1
+-keep class android.support.v4.widget.SwipeRefreshLayout { <init>(...); }
+
+# view AndroidManifest.xml #generated:10
+-keep class com.roy.test.testPullToFresh { <init>(...); }
+
