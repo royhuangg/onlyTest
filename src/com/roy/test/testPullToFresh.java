@@ -32,6 +32,7 @@ import org.json.JSONObject;
  * @author ROY
  */
 public class testPullToFresh extends SampleFace implements SwipeRefreshLayout.OnRefreshListener {
+
     protected JSONAdapter jadapter;
     protected JSONObject object = null;
     ArrayAdapter<String> aa;
@@ -46,57 +47,60 @@ public class testPullToFresh extends SampleFace implements SwipeRefreshLayout.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         new AsyncAction<JSONArray>(this) {
 
-                @Override
-                public void afterExecution(JSONArray result) {
-                    jadapter.setArray(result);
-                    jadapter.notifyDataSetChanged();
+            @Override
+            public void afterExecution(JSONArray result) {
+                jadapter.setArray(result);
+                jadapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public boolean execute(Context context) {
+                JSONObject obj = null;
+                try {
+                    obj = new Mon("http://www.json-generator.com/api/json/get/bUpnyUCUSW?indent=2").sendAndWrap();
+                    setResult(obj.getJSONArray("users"));
+                } catch (Exception exception) {
                 }
 
-                @Override
-                public boolean execute(Context context) {
-                    JSONObject obj = null;
-                    try {
-                        obj = new Mon("http://www.json-generator.com/api/json/get/bUpnyUCUSW?indent=2").sendAndWrap();
-                        setResult(obj.getJSONArray("users"));
-                    } catch (Exception exception) {
-                    }
+                return true;
+            }
+        }.cancelable().execute();
 
-                    return true;
-                }
-            }.cancelable().execute();
         jadapter = new JSONAdapter(this, new JSONArray()) {
 
-                            @Override
-                            public View createRowView(int index, JSONObject item) {
-                                LinearLayout layout = new LinearLayout(context);
-                                final LayoutMaker m = new LayoutMaker(context, layout, false);
-                                m.addRowLayout(false, m.layFW());
-                                {
-                                    m.add(m.createStyledText("").tag("id").center().size(14).color(Color.rgb(102, 139, 139)).get(), m.layFW(5));
-                                    m.add(m.createStyledText("").tag("name").center().size(11).get(), m.layFW(4));
-                                    m.add(m.createStyledText("").tag("age").center().size(13).get(), m.layFW(5));
-                                    m.add(m.createStyledText("").tag("gender").center().size(13).get(), m.layFW(5));
-                                    m.add(m.createStyledText("").tag("team").center().size(12).get(), m.layFW(4));
+            @Override
+            public View createRowView(int index, JSONObject item) {
+                LinearLayout layout = new LinearLayout(context);
+                final LayoutMaker m = new LayoutMaker(context, layout, false);
+                m.addRowLayout(false, m.layFW());
+                {
+                    m.getLastLayout().setBackgroundColor(Color.GREEN);
+                    m.add(m.createStyledText("").tag("id").center().size(14).color(Color.rgb(102, 139, 139)).get(), m.layFW(5));
+                    m.add(m.createStyledText("").tag("name").center().size(11).get(), m.layFW(4));
+                    m.add(m.createStyledText("").tag("age").center().size(13).get(), m.layFW(5));
+                    m.add(m.createStyledText("").tag("gender").center().size(13).get(), m.layFW(5));
+                    m.add(m.createStyledText("").tag("team").center().size(12).get(), m.layFW(4));
                                    // Log.i("test","index is : "+String.valueOf(index) );
-                                    
-                                    m.escape();
-                                }
-                                return layout;
-                            }
 
-                            @Override
-                            public void fillRowView(int index, View cellRenderer, JSONObject item) throws JSONException {
-                                findView(cellRenderer, "id", TextView.class).setText(item.getString("userId"));
-                                findView(cellRenderer, "name", TextView.class).setText(item.getString("name"));
-                                findView(cellRenderer, "age", TextView.class).setText(item.getString("age"));
-                                findView(cellRenderer, "gender", TextView.class).setText(item.getString("gender"));
-                               // findView(cellRenderer, "team", TextView.class).setText(item.getString("team"));
-                                findView(cellRenderer, "team", TextView.class).setText(String.valueOf(index));
-                            }
+                    m.escape();
+                }
+                return layout;
+            }
 
-                        };
+            @Override
+            public void fillRowView(int index, View cellRenderer, JSONObject item) throws JSONException {
+                findView(cellRenderer, "id", TextView.class).setText(item.getString("userId"));
+                findView(cellRenderer, "name", TextView.class).setText(item.getString("name"));
+                findView(cellRenderer, "age", TextView.class).setText(item.getString("age"));
+                findView(cellRenderer, "gender", TextView.class).setText(item.getString("gender"));
+                // findView(cellRenderer, "team", TextView.class).setText(item.getString("team"));
+                findView(cellRenderer, "team", TextView.class).setText(String.valueOf(index));
+            }
+
+        };
         list.add("Hello");
         list.add("This is stormzhang");
         list.add("An Android Developer");
@@ -151,12 +155,35 @@ public class testPullToFresh extends SampleFace implements SwipeRefreshLayout.On
     }
 
     public void onRefresh() {
-        new Handler().postDelayed(new Runnable() {
+        /*new Handler().postDelayed(new Runnable() {
+         @Override
+         public void run() {
+         mSwipeLayout.setRefreshing(false);
+         }
+         }, 3000);*/
+        new AsyncAction<JSONArray>(this) {
+
             @Override
-            public void run() {
+            public void afterExecution(JSONArray result) {
+                jadapter.setArray(result);
+                jadapter.notifyDataSetChanged();
+               // mListView.removeAllViews();
                 mSwipeLayout.setRefreshing(false);
             }
-        }, 3000);
+
+            @Override
+            public boolean execute(Context context) {
+                JSONObject obj = null;
+                try {
+                    obj = new Mon("http://www.json-generator.com/api/json/get/bUpnyUCUSW?indent=2").sendAndWrap();
+                    setResult(obj.getJSONArray("users"));
+                } catch (Exception exception) {
+                }
+
+                return true;
+            }
+        }.cancelable().silence().execute();
+
     }
 
 }
