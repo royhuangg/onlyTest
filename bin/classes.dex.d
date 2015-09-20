@@ -49,6 +49,8 @@ G:\Source\Project\onlyTest\bin\classes\com\roy\test\testPicasso$CropSquareTransf
 G:\Source\Project\onlyTest\bin\classes\com\roy\test\testPicasso.class \
 G:\Source\Project\onlyTest\bin\classes\com\roy\test\testPullToFresh$1.class \
 G:\Source\Project\onlyTest\bin\classes\com\roy\test\testPullToFresh$2.class \
+G:\Source\Project\onlyTest\bin\classes\com\roy\test\testPullToFresh$3.class \
+G:\Source\Project\onlyTest\bin\classes\com\roy\test\testPullToFresh$4.class \
 G:\Source\Project\onlyTest\bin\classes\com\roy\test\testPullToFresh.class \
 G:\Source\Project\onlyTest\bin\classes\com\roy\test\testTabIndicator$WYNewsAdapter.class \
 G:\Source\Project\onlyTest\bin\classes\com\roy\test\testTabIndicator.class \
