@@ -1,2 +1,2 @@
 # onlyTest
-practice for lean library
+practice for learn library
